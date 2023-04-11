@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/create-conical-gradient@latest/umd/create-conical-gradient.min.js"></script>
+  </head>
+  <body>
+    <canvas id="my-canvas"></canvas>
+    <script>
+      const canvas = document.getElementById("my-canvas");
+      const ctx = canvas.getContext("2d");
+      const gradient = ctx.createConicalGradient(
+        150,
+        150 / 2,
+        -Math.PI,
+        -Math.PI + Math.PI
+      );
+
+      gradient.addColorStop(0, "#f00");
+      gradient.addColorStop(0.2, "#00f");
+      gradient.addColorStop(0.4, "#0ff");
+      gradient.addColorStop(0.6, "#f0f");
+      gradient.addColorStop(0.8, "#ff0");
+      gradient.addColorStop(1, "#f00");
+
+      let isStroke = false;
+      const draw = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.beginPath();
+        ctx.arc(
+          canvas.width / 2,
+          canvas.height / 2,
+          canvas.height / 2.5,
+          0,
+          2 * Math.PI
+        );
+
+        if (isStroke) {
+          ctx.strokeStyle = gradient.pattern;
+          ctx.lineWidth = 10;
+          ctx.stroke();
+        } else {
+          ctx.fillStyle = gradient.pattern;
+          ctx.fill();
+        }
+
+        ctx.closePath();
+        isStroke = !isStroke;
+      };
+
+      draw();
+      canvas.addEventListener("click", draw);
+    </script>
+  </body>
+</html>

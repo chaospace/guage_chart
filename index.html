@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>canvas-guage-test</title>
+    <script src="./CPGuageChart.js"></script>
+    <style>
+      .chart-area {
+        position: relative;
+        width: 100%;
+        height: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="chart-area">
+      <canvas></canvas>
+    </div>
+    <script>
+      let date = new Date();
+      let h = date.getHours();
+      let m = date.getMinutes();
+      let min = 5 * 60;
+      let max = 60 * 24;
+      let c = h * 60 + m;
+      var chart = new GuageChart(document.querySelector(".chart-area"), {
+        min: min,
+        max: max
+      });
+      chart.value = c;
+    </script>
+  </body>
+</html>

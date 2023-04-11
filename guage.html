@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>canvas-guage-test</title>
+    <script src="./CPGuageChart.js"></script>
+    <style>
+      .chart-area {
+        position: relative;
+        width: 300px;
+        height: 150px;
+      }
+
+      .chart-area .bg {
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="chart-area">
+      <canvas></canvas>
+    </div>
+    <script>
+      
+      // 그라디언트에 쓸 컬러 목록
+      //0, .2, .4, .6 , .8, 1.0;
+      let capacity = 373.03;
+      let values = [0, 2.63, 10.98, 21.38, 63.9, 129.6, 206, 270.56];
+      let colorRate = values.map(v => v / capacity);
+      let rateUnit = 1 / COLORS.length;
+      let gradientUnit = 1 / values.length;
+      let min = 0 * 60 * 60;
+      let max = 24 * 60 * 60;
+      let d = new Date();
+      let current = Math.max(
+        min,
+        d.getHours() * 60 + d.getMinutes() * 60 + d.getSeconds()
+      );
+      current += 20 * 60 * 60;
+      let start = 0;
+      let end = ((current - min) / (max - min)) * 180;
+      let angleUnit = 180 / colorRate.length;
+      let colors = [];
+      for (let i = 1; i < colorRate.length; i++) {
+        const sr = colorRate[i - 1];
+        const er = colorRate[i];
+        colors.push({
+          scolor: COLORS[Math.round(sr / rateUnit)],
+          ecolor: COLORS[Math.round(er / rateUnit)],
+          sAngle: angleUnit * (i - 1),
+          eAngle: angleUnit * i
+        });
+      }
+
+      let chart = new GuageChart(document.querySelector(".chart-area"), {
+        colors: colors,
+        min: min,
+        max: max
+      });
+
+      chart.value = current;
+    </script>
+  </body>
+</html>
