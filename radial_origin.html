@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <canvas class="canvas"></canvas>
+    <script>
+      let canvas = document.querySelector(".canvas");
+      let ctx = canvas.getContext("2d");
+
+      function drawMultiRadiantCircle(xc, yc, r, radientColors) {
+        var start = -Math.PI;
+        var partLength = Math.PI / radientColors.length;
+        var gradient = null;
+        var startColor = null,
+          endColor = null;
+
+        for (var i = 0; i < radientColors.length; i++) {
+          startColor = radientColors[i];
+          endColor = radientColors[i + 1] || "gray";
+
+          // x start / end of the next arc to draw
+          var xStart = xc + Math.cos(start) * r;
+          var xEnd = xc + Math.cos(start + partLength) * r;
+          // y start / end of the next arc to draw
+          var yStart = yc + Math.sin(start) * r;
+          var yEnd = yc + Math.sin(start + partLength) * r;
+
+          ctx.beginPath();
+
+          gradient = ctx.createLinearGradient(xStart, yStart, xEnd, yEnd);
+          gradient.addColorStop(0, startColor);
+          gradient.addColorStop(1.0, endColor);
+
+          ctx.strokeStyle = gradient;
+          //ctx.fillStyle = gradient;
+          ctx.arc(xc, yc, r, start, start + partLength);
+          ctx.lineWidth = 15;
+          ctx.stroke();
+          ctx.closePath();
+          start += partLength;
+        }
+        // start = -Math.PI;
+        // ctx.globalCompositeOperation = "destination-in";
+        // ctx.beginPath();
+        // // x start / end of the next arc to draw
+        // xStart = xc + Math.cos(start) * r;
+        // xEnd = xc + Math.cos(start + Math.PI / 8) * r;
+        // // y start / end of the next arc to draw
+        // yStart = yc + Math.sin(start) * r;
+        // yEnd = yc + Math.sin(start + Math.PI / 8) * r;
+        // ctx.arc(xc, yc, r, start, start + partLength);
+        // ctx.lineWidth = 10;
+        // ctx.strokeStyle = "red";
+        // ctx.stroke();
+        // ctx.closePath();
+      }
+
+      var someColors = [];
+      someColors.push("green");
+      someColors.push("yellow");
+      someColors.push("blue");
+      //someColors.push("#FFCC00");
+      //someColors.push("#FF00FF");
+      drawMultiRadiantCircle(150, 75, 60, someColors);
+    </script>
+  </body>
+</html>
